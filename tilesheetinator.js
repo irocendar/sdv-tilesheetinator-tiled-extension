@@ -1,9 +1,9 @@
 /*************
  *
- * Version: 1.0.0
+ * Version: 1.1.0
  * License: MIT (see repo for details)
  *
- * Copyright (c) 2025 irocendar
+ * Copyright (c) 2025-2026 irocendar
  *
  * https://github.com/irocendar/sdv-tilesheetinator-tiled-extension
  * https://www.nexusmods.com/stardewvalley/mods/40281
@@ -54,6 +54,7 @@ config.ModPaths = config.ModPaths || []
  **************/
 
 var workingDir = FileInfo.path(tiled.activeAsset ? tiled.activeAsset.fileName : "")
+tiled.log(workingDir)
 tiled.activeAssetChanged.connect(asset => {
     workingDir = FileInfo.path(asset.fileName)
 })
@@ -90,6 +91,30 @@ var browseButtonStyle = "\
 function loadTilesets(asset, mainAsset=null) {
 
     if (!checkDirPath(false)) return
+
+    function getOriginalFilename(ts) {
+        return FileInfo.relativePath(workingDir, FileInfo.fromNativeSeparators(ts.imageFileName))
+    }
+    var ATAtilesets = asset.tilesets.filter(
+        ts => getOriginalFilename(ts).startsWith("Content/")
+    )
+    if (ATAtilesets.length > 0) {
+        if (tiled.confirm(
+            `This map has tilesheets that use Arbitrary Tilesheet Access by Spiderbuttons, whose functionality is now part of SMAPI. Convert to SMAPI's syntax?
+
+This will make actual changes to your map.`, 
+            "Arbitrary Tilesheet Access Syntax Found"
+        )) {
+            asset.macro("Remove old ATA syntax", () => ATAtilesets.forEach(ts => {
+                ts.imageFileName = FileInfo.joinPaths("..", getOriginalFilename(ts).substring(8))
+            }))
+            tiled.alert(
+                `Updated tilesheets to use SMAPI's new syntax. You can now remove ATA from your mod's dependencies.
+                
+Please save your map.`
+            )
+        }
+    }
 
     asset.tilesets.forEach(ts => {
         var img = new Image();
@@ -196,13 +221,6 @@ var addAction = tiled.registerAction("add_stardew_tilesheet", () => {
         ts.tileSpacing = 0
         ts.margin = 0
         var rel = FileInfo.fromNativeSeparators(FileInfo.relativePath(config.MapsDirPath, path.text))
-        if (rel.startsWith("../")) {
-            if (!tiled.confirm(
-                "Using this as a tilesheet will require having a dependency on Arbitrary Tilesheet Access by Spiderbuttons. Continue?", 
-                "Arbitrary Tilesheet Access Required"
-            )) return
-            rel = FileInfo.joinPaths("Content", rel.substring(2))
-        }
         rel = FileInfo.toNativeSeparators(rel)
         rel = FileInfo.joinPaths(FileInfo.path(rel), FileInfo.completeBaseName(rel))
 

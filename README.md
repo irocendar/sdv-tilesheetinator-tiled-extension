@@ -21,10 +21,10 @@ Click `Ctrl+Shift+.` or `Map` > `Choose Unpacked Maps Folder`. Once you set it, 
 ### Fix Missing Tilesheets
 Click `Ctrl+.` or `Map` > `Fix Stardew Tilesheets` to load missing tilesheets in. This won't affect the map permanently so it's perfectly safe to save after doing this.
 
-Add Vanilla Tilesheet
-Click `Ctrl+,` or `Map` > `Add Vanilla Stardew Tilesheet` to correctly add a new vanilla tilesheet manually. Remember that manually adding tilesheets will add them without any animations/preconfigured tile properties.
+If tilesheets using [Arbitrary Tilesheet Access](https://www.nexusmods.com/stardewvalley/mods/30001) syntax are found, you will be given the option to update them to [SMAPI 4.4.0's new built-in relative tilesheet source path support](https://github.com/Pathoschild/SMAPI/blob/develop/docs/release-notes.md#440).
 
-Adding tilesheets from outside the Maps folder will add them using [Arbitrary Tilesheet Access](https://www.nexusmods.com/stardewvalley/mods/30001) syntax.
+### Add Vanilla Tilesheet
+Click `Ctrl+,` or `Map` > `Add Vanilla Stardew Tilesheet` to correctly add a new vanilla tilesheet manually. Remember that manually adding tilesheets will add them without any animations/preconfigured tile properties.
 
 ### Manage Tilesheet Mods
 Click `Ctrl+Shift+,` or `Map` > `Manage Stardew Tilesheet Mods` to open the tilesheet mod menu.
@@ -47,3 +47,7 @@ You can report bugs via issues in this repo but I recommend also letting me know
 
 ## Permissions
 This extension is licensed under MIT, but I would prefer that you ask first before translating, modifying and/or redistributing it unless I have left the community.
+
+## Changelog
+
+1.1.0: Update to use [SMAPI 4.4.0's new built-in relative tilesheet source path support](https://github.com/Pathoschild/SMAPI/blob/develop/docs/release-notes.md#440) over [Arbitrary Tilesheet Access](https://www.nexusmods.com/stardewvalley/mods/30001).
